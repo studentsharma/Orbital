@@ -5,14 +5,13 @@ import { generateOtp } from '../utils/generateOTP.js';
 import { sendOTP } from '../services/email.service.js';
 
 function createAuthToken(user) {
-	return jwt.sign(
-		{
-			email: user.email,
-			username: user.username,
-		},
-		process.env.JWT_SECRET || 'orbital-dev-secret',
-		{ expiresIn: '7d' }
-	);
+    return jwt.sign(
+        {
+			userId: user.id,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+    );
 }
 
 function getAuthCookieOptions() {
@@ -49,13 +48,14 @@ async function register(request, response) {
 		const result = await pool.query(
 			`INSERT INTO "user" (email, username, passwordHash, otp)
 			 VALUES ($1, $2, $3, $4)
-			 RETURNING email, username, created_at, is_verified`,
+			 RETURNING id, email, username, created_at, is_verified`,
 			[email, username, passwordHash, otp]
 		);
 
 		await sendOTP(email, otp);
 
 		const token = createAuthToken(result.rows[0]);
+		console.log("Generated Token:", token);
 		response.cookie('token', token, getAuthCookieOptions());
 
 		return response.status(201).json({
@@ -138,7 +138,7 @@ async function login(request, response) {
 		}
 
 		const result = await pool.query(
-			'SELECT email, username, passwordHash, is_verified FROM "user" WHERE email = $1',
+			'SELECT id,email, username, passwordHash, is_verified FROM "user" WHERE email = $1',
 			[email]
 		);
 
@@ -171,6 +171,7 @@ async function login(request, response) {
 			message: 'Login successful.',
 			token,
 			user: {
+				id: user.id,
 				email: user.email,
 				username: user.username,
 			},
@@ -182,6 +183,7 @@ async function login(request, response) {
 		});
 	}
 }
+
 
 async function resendVerificationCode(request, response) {
 	try {

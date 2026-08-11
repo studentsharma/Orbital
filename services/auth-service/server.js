@@ -50,7 +50,7 @@ async function runMigrations() {
 async function startServer() {
 	try {
 		await runMigrations();
-		app.listen(port, () => {
+		app.listen(port, '0.0.0.0', () => {
 			console.log(`Server running on port ${port}`);
 		});
 	} catch (error) {

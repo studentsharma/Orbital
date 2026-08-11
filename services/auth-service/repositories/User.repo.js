@@ -6,12 +6,14 @@ class UserRepository {
 
         const query = `
         INSERT INTO "user" (
+            id,
             email,
             username,
             passwordHash
         )
-        VALUES ($1, $2, $3)
+        VALUES (gen_random_uuid(), $1, $2, $3)
         RETURNING
+            id,
             email,
             username,
             created_at,

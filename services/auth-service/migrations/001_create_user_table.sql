@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS "user" (
-    email VARCHAR(255) PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255),
     passwordHash VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
