@@ -1,5 +1,5 @@
 import Router from "express";
-import {createPost, editPost, deletePost, commentPost, likePost, dislikePost, getPosts} from "../controllers/post.controller.js";
+import {createPost, editPost, deletePost, commentPost, likePost, dislikePost, getPosts, getGlobalFeed} from "../controllers/post.controller.js";
 import authenticate from "../middleware/auth.middleware.js";
 import multer from "multer";
 import uploadImage from "../imagekit/imagekitControl.js";
@@ -23,6 +23,7 @@ router.post("/post-like", likePost);
 router.post("/post-dislike", dislikePost);
 
 router.post("/get-posts", getPosts);
+router.post("/get-global-feed", getGlobalFeed);
 
 
 export default router;

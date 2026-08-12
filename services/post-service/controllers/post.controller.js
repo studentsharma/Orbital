@@ -204,6 +204,27 @@ const getPosts = async (request, response) => {
     }
 };
 
+const getGlobalFeed = async (request, response) => {
+    try {
+        const currentUserId = request.userId;
+
+        const posts = await Post.find({})
+            .sort({ createdAt: -1 });
+
+        return response.status(200).json({
+            currentUserId,
+            posts,
+        });
+
+    } catch (error) {
+        console.error("Get global feed error:", error);
+
+        return response.status(500).json({
+            message: "Failed to get global feed",
+        });
+    }
+};
 
 
-export { createPost, editPost, deletePost, commentPost, likePost, dislikePost, getPosts };
+
+export { createPost, editPost, deletePost, commentPost, likePost, dislikePost, getPosts, getGlobalFeed };
