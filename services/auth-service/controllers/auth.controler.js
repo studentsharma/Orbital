@@ -5,13 +5,13 @@ import { generateOtp } from '../utils/generateOTP.js';
 import { sendOTP } from '../services/email.service.js';
 
 function createAuthToken(user) {
-    return jwt.sign(
-        {
+	return jwt.sign(
+		{
 			userId: user.id,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '7d' }
-    );
+		},
+		process.env.JWT_SECRET,
+		{ expiresIn: '7d' }
+	);
 }
 
 function getAuthCookieOptions() {
@@ -51,12 +51,28 @@ async function register(request, response) {
 			 RETURNING id, email, username, created_at, is_verified`,
 			[email, username, passwordHash, otp]
 		);
-
+		
+		const user = result.rows[0];
+		await fetch(
+			`${process.env.USER_SERVICE_URL}/api/user/create-user-profile`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					userId: user.id,
+					username: user.username,
+					email: user.email,
+				}),
+			}
+		);
 		await sendOTP(email, otp);
 
 		const token = createAuthToken(result.rows[0]);
 		console.log("Generated Token:", token);
 		response.cookie('token', token, getAuthCookieOptions());
+
 
 		return response.status(201).json({
 			message: 'User registered. Verification email sent.',
