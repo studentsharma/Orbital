@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply min-h-screen bg-cloud font-sans text-ink antialiased; }
+  button, input, textarea { font: inherit; }
+}
+
+@layer components {
+  .card { @apply rounded-3xl border border-white bg-white shadow-card; }
+  .field { @apply w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-violet focus:bg-white focus:ring-4 focus:ring-violet/10; }
+  .button { @apply inline-flex items-center justify-center rounded-2xl px-4 py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50; }
+  .button-primary { @apply button bg-violet text-white hover:bg-indigo-600; }
+  .button-soft { @apply button bg-violet/10 text-violet hover:bg-violet/20; }
+}
