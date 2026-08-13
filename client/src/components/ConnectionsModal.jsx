@@ -1,5 +1,58 @@
+// import Avatar from "./Avatar";
+
+// export default function ConnectionsModal({ title, users, onClose, onProfile }) {
+//   return <div className="fixed inset-0 z-30 grid place-items-center bg-ink/40 p-5" onClick={onClose}><div className="card max-h-[75vh] w-full max-w-md overflow-auto p-5" onClick={(event) => event.stopPropagation()}><div className="flex items-center justify-between"><h2 className="text-xl font-black">{title}</h2><button className="button-soft px-3 py-2" onClick={onClose}>Close</button></div>{users.length ? <div className="mt-5 space-y-3">{users.map((person) => <button key={person.user_id} className="flex w-full items-center gap-3 rounded-2xl p-2 text-left hover:bg-violet/5" onClick={() => onProfile({ userId: person.user_id, username: person.username, avatar_url: person.avatar_url })}><Avatar user={person} name={person.username} onClick={() => {}} /><div><p className="font-bold">{person.username}</p>{person.bio && <p className="text-sm text-slate-500">{person.bio}</p>}</div></button>)}</div> : <p className="mt-5 text-sm text-slate-500">No {title.toLowerCase()} yet. Make some friends in the community.</p>}</div></div>;
+// }
+
+
 import Avatar from "./Avatar";
 
 export default function ConnectionsModal({ title, users, onClose, onProfile }) {
-  return <div className="fixed inset-0 z-30 grid place-items-center bg-ink/40 p-5" onClick={onClose}><div className="card max-h-[75vh] w-full max-w-md overflow-auto p-5" onClick={(event) => event.stopPropagation()}><div className="flex items-center justify-between"><h2 className="text-xl font-black">{title}</h2><button className="button-soft px-3 py-2" onClick={onClose}>Close</button></div>{users.length ? <div className="mt-5 space-y-3">{users.map((person) => <button key={person.user_id} className="flex w-full items-center gap-3 rounded-2xl p-2 text-left hover:bg-violet/5" onClick={() => onProfile({ userId: person.user_id, username: person.username, avatar_url: person.avatar_url })}><Avatar user={person} name={person.username} onClick={() => {}} /><div><p className="font-bold">{person.username}</p>{person.bio && <p className="text-sm text-slate-500">{person.bio}</p>}</div></button>)}</div> : <p className="mt-5 text-sm text-slate-500">No {title.toLowerCase()} yet. Make some friends in the community.</p>}</div></div>;
+  return (
+    <div
+      className="fixed inset-0 z-30 grid place-items-center bg-ink/40 p-3 sm:p-5"
+      onClick={onClose}
+    >
+      <div
+        className="card max-h-[85vh] w-full max-w-md overflow-auto p-4 sm:max-h-[75vh] sm:p-5"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="truncate text-lg font-black sm:text-xl">{title}</h2>
+          <button className="button-soft shrink-0 px-3 py-2 text-sm sm:text-base" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        {users.length ? (
+          <div className="mt-5 space-y-2 sm:space-y-3">
+            {users.map((person) => (
+              <button
+                key={person.user_id}
+                className="flex w-full items-center gap-3 rounded-2xl p-2 text-left hover:bg-violet/5"
+                onClick={() =>
+                  onProfile({
+                    userId: person.user_id,
+                    username: person.username,
+                    avatar_url: person.avatar_url,
+                  })
+                }
+              >
+                <Avatar user={person} name={person.username} onClick={() => {}} />
+                <div className="min-w-0">
+                  <p className="truncate font-bold">{person.username}</p>
+                  {person.bio && (
+                    <p className="truncate text-sm text-slate-500">{person.bio}</p>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-5 text-sm text-slate-500">
+            No {title.toLowerCase()} yet. Make some friends in the community.
+          </p>
+        )}
+      </div>
+    </div>
+  );
 }
